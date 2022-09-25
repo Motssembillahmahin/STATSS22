@@ -1,0 +1,264 @@
+L_1
+Iq=c(2,4,3,23,25,27,28,13,15,16,20,14,35,33,32,21,35,40,42,22,33,13,17,20,25,29,27,40,38,31)
+population_mean=mean(Iq)
+population_variance=var(Iq)
+length_IQ=length(Iq)
+population_sd=sd(Iq)
+
+# checking normality
+qqnorm(Iq)
+qqline(Iq)
+
+# point estimation
+set.seed(1246)
+x=sample(Iq,10,replace = TRUE)
+p_mean=mean(x)
+p_sd=sd(x)
+
+z=abs(qnorm(0.025,0,1))
+# Interval estimation
+lower=p_mean-z*p_sd/sqrt(10)
+upper=p_mean+z*p_sd/sqrt(10)
+# 95% confidence interval for population mean(13.56 ,29.63)
+
+# sampling distribution mean
+choose(30,10)
+nsample=rep(0,300000)
+for (i in 1:300000) {
+  nsample[i]=mean(sample(Iq,10,replace = TRUE))
+}
+hist(nsample)
+nsam_mean=mean(nsample)
+bias=mean(nsample)-mean(Iq)
+
+#sample distribution for medium
+nsample2=rep(0,300000)
+for (i in 1:300000) {
+  nsample2[i]=median(sample(Iq,10,replace = TRUE))
+}
+hist(nsample2)
+nsam2_median=median(nsample2)
+bias=median(nsample2)-median(Iq)
+
+# efficiency check 
+L1=length(nsample)
+V1=sum((nsample-population_mean)^2)/L1
+
+L2=length(nsample2)
+V2=sum((nsample2-median(Iq))^2)/L2
+
+# V1 is smaller than V2 so V1 is more efficient
+--------------------------------------------------------------------------
+L-2
+# vector of outcomes
+s=2:12
+# vector of probabilities
+ps=c(1:6,5:1)/36
+names(ps)=c(1:6,5:1)
+# Expected value
+E=sum(s*ps)
+# variance 
+Vars=sum((s-E)^2*ps)
+
+# plot the distribution of s
+barplot(ps,
+        ylim = c(0,0.2),
+        ylab = "Probability",
+        xlab = "S",
+        col = "steelblue",
+        space = 0,
+        main = "Sum of two dice Rolls")
+
+D=rep(1/6,6)
+names(D)=1:6
+
+# plot of the distribution of D
+barplot(D,
+        ylim = c(0,0.2),
+        ylab = "Probability",
+        xlab = "D",
+        col = "steelblue",
+        space = 0,
+        main = "Outcomes of a single dice roll")
+----------------------------------------------------------------------
+L_3
+# H0:mu<=5
+# H1:mu>5
+x.bar=6.7
+sd=7.1
+alpha=0.05
+mu=5
+n=29
+
+z=(x.bar-mu)/(sd/sqrt(n))
+ztab=qnorm(alpha,lower.tail = FALSE)
+# since Ztab>z ,so H0 is accepted
+
+# pvalue
+pvalue=pnorm(z,lower.tail = FALSE)
+# since pvalue>alpha,so H0 is accepted
+
+# mu is not equal 5
+ztab1=qnorm(alpha/2)
+ztab2=qnorm(1-alpha/2)
+
+# pvalue
+p.value=2*pnorm(z,lower.tail = FALSE)
+# confidence interval find 
+CI=c(x.bar+ztab1*sd/sqrt(n),x.bar+ztab2*sd/sqrt(n)) 
+------------------------------------------------
+L_4
+# H0:mu>=14
+# H1:mu<14
+
+n=10
+data=c(12.3,11.4,14.2,15.3,14.8,13.8,11.1,15.1,15.8,13.2)
+mu=14.6
+alpha=0.01
+x.bar=mean(data)
+data_sd=sd(data)
+# t distribution when n<30
+t=(x.bar-mu)/(data_sd/sqrt(n))
+ttab=qt(alpha,n-1)
+# since ttab falls in accepted region
+# H0 is accepted
+
+# pvalue
+pvalue=pt(t,df=n-1)
+# since pvalue>alpha H0 is accepted
+boxplot(data,ylab="HB level",col = "gray")
+qqnorm(data,main =  "Normal Q-Q plot of Hb level")
+qqline(data)
+------------------------------------------------------------------------
+L_5
+x1=c(12.3,11.4,14.2,15.3,14.8,13.8,11.1,15.1,15.8,13.2)
+x2=c(11.1,17.2,13.4,15.2,14.1,13.0,12.5,11.5,12.7,14.5,15.3,14.0)
+s1=sd(x1)
+s2=sd(x2)
+s1/s2
+
+par(mfrow=c(1,2))
+qqnorm(x1,main="qq plot for x1")
+qqline(x1)
+qqnorm(x2,main="qq plot for x2")
+qqline(x2)
+
+n1=length(x1)
+n2=length(x2)
+x1.bar=mean(x1)
+x2.bar=mean(x2)
+x1.var=var(x1)
+x2.var=var(x2)
+sp=((n1-1)*x1.var+(n2-1)*x2.var)/(n1+n2-2)
+
+t=(x1.bar-x2.bar)/sqrt(sp*(1/n1+1/n2))
+alpha=0.05
+t.tab=qt(alpha/2,n1+n2-2)
+# H0 is accepted
+---------------------------------------------------------------------------
+L_6
+x1<-c(120,115,94,118,111,102,102,131,104,107,115,139,115,114,113,105,115,134,109,109,93,118,109,106,125)
+x2<-c(150,142,119,127,141,149,144,142,149,161,143,140,148,149,141,146,159,152,135,134,161,130,125,141,
+      148,153,145,137,147,169)
+
+s1=sd(x1)
+s2=sd(x2)
+s1/s2
+
+par(mfrow=c(1,2))
+qqnorm(x1,main="qq plot for x1")
+qqline(x1)
+qqnorm(x2,main="qq plot for x2")
+qqline(x2)
+
+x1.bar=mean(x1)
+x2.bar=mean(x2)
+x1.var=var(x1)
+x2.var=var(x2)
+n1=length(x1)
+n2=length(x2)
+sp=((n1-1)*x1.var+(n2-1)*x2.var)/(n1+n2-2)
+
+t=(x1.bar-x2.bar)/sqrt(sp*(1/n1+1/n2))
+alpha=0.05
+t.tab=qt(alpha/2,n1+n2-2)
+# H0 is accepted
+-------------------------------------------------------
+L_7
+M=matrix(c(55,16,23,32),ncol = 2,byrow = TRUE)
+alpha=0.05
+chisq.test(M)
+# pavlue<alpha,so H0 is rejected
+------------------------------------------------------
+L_8
+booth_1<- c("positive","positive", "negative","positive", "negative", "negative", "positive","positive","positive", "negative", "positive")
+booth_2<- c("negative", "negative", "negative", "positive", "positive", "negative", "positive", "negative", "negative", "negative")
+table1_x=table(booth_1)
+table2_x=table(booth_2)
+
+m=matrix(c(7,4,3,7),ncol = 2,byrow = TRUE,dimnames = list(c("Booth-1","Booth-2"),c("positive","negative")))
+c1=sum(m[,1])
+c2=sum(m[,2])
+r1=sum(m[1,])
+r2=sum(m[2,])
+n=sum(m)
+E11=(c1*r1)/n
+E12=(c2*r1)/n
+E21=(c1*r2)/n
+E22=(c2*r2)/n
+
+# E21 is less than 5 so we need to do "Yates" continuity correction
+chi_yates=(((abs(m[1]-E11)-0.5)^2)/E11)+(((abs(m[2]-E21)-0.5)^2)/E21)+ ((abs(m[3]-E12)-0.5)^2/E12) + ((abs(m[4]-E22)-0.5)^2/E22)
+# df=(r-1)(c-1)
+alpha=0.05
+chi_tab=qchisq(alpha,1,lower.tail = FALSE)
+# chi_tab>chi_yates so H0 is accepted
+
+pvalue=pchisq(chi_yates,1,lower.tail = FALSE)
+# pvalue>alpha so H0 is accepted
+chisq.test(m)
+-----------------------------------------------------------
+L_9
+x=c(120,115,94,118,111,102,102,131,104,107,115,139,115,114,113,105,115,134,109,109,93,118,109,106,125)
+
+sigma2=400
+mu=130
+df=length(x)
+chisquare=(sum(x-mu)^2)/sigma2
+pvalue=2*min(pchisq(chisquare,df),1-pchisq(chisquare,df))
+# pavlue<alpha so H0 is rejected
+----------------------------------------------------------------------
+L_10
+x1<-c(120,115,94,118,111,102,102,131,104,107,115,139,115,114,113,105,115,134,109,109,93,118,109,106,125)
+x2<-c(150,142,119,127,141,149,144,142,149,161,143,140,148,149,141,146,159,152,135,134,161,130,125,141,
+      148,153,145,137,147,169)
+
+x1.var=var(x1)
+x2.var=var(x2)
+df1=length(x1)-1
+df2=length(x2)-1
+
+F=x1.var/x2.var
+pvalue=2*min(pf(F,df1,df2),1-pf(F,df1,df2))
+alpha=0.05 
+# pvalue>alpha,so H0 is accepted
+-------------------------------------------
+L_11
+
+x=c(122,145,120,45,98,67,109,100,107,106,93,125,130,90,34,108,80,48,65,56)
+alpha=0.05
+md=110
+y=sum(x>md)
+n=sum(x!=md)
+pvalue=1-pbinom(y-1,n,0.5)
+# pvalue>alpha so H0 is accepted
+-------------------------------
+L_12
+X1<-c(120,115,94,118,111,102,102,131,104,107,115,139,115,114,113,105,115,134,109,109,93,118,109,106,125)
+X2<-c(150,142,119,127,141,149,144,142,149,161,143,140,148,149,141,146,159,152,135,134,161,130,125,141,
+      148,153,145,137,147,169)
+
+
+wilcox.test(X1,X2,exact=FALSE,correct=TRUE,alternative="two.sided")
+
+# H0 is rejected
